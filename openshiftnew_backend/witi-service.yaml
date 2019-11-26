@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f ../docker-compose.yaml --provider=openshift
+    kompose.version: 1.17.0 (a74acad)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: witi
+  name: witi
+spec:
+  ports:
+  - name: "8080"
+    port: 8080
+    targetPort: 8085
+  selector:
+    io.kompose.service: witi
+status:
+  loadBalancer: {}

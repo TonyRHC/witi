@@ -1,0 +1,44 @@
+version: '3.0'
+services:
+  mysql:
+    container_name: mysql
+    build:
+      context: .
+      dockerfile: Dockerfile-mysql
+    image: witi/mysql:1.0.0
+    ports:
+      - "3306:3306"
+    volumes:
+      - /docker/witi/mysql:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: c0nygre1
+    command: --explicit_defaults_for_timestamp
+
+  witi:
+    container_name: witi-server
+    build:
+      context: .
+      dockerfile: Dockerfile-witi-server
+    image: witi/witi-server:1.0.0
+    links:
+      - mysql:mysql
+      - react:react
+    ports:
+      - "8080:8085"
+      - "80:80"
+    restart: always
+
+
+  react:
+    container_name: react
+    build:
+      context: .
+      dockerfile: Dockerfile-react
+      args:
+        REACT_APP_REST_API: http://172.31.6.25:8080/
+    ports:
+      - "9090:80" # Map the exposed port 80 on the container to port 9090 on the host machine
+    restart: always
+
+

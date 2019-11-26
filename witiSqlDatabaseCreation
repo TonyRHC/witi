@@ -1,0 +1,94 @@
+
+CREATE DATABASE IF NOT EXISTS witi;
+use witi;
+
+/*
+CREATE TABLE market_feed_data (
+	id int primary key auto_increment,
+	stock_name varchar (50) not null,
+	price double not null,
+	time datetime not null
+);*/
+
+CREATE TABLE strategy(
+	id int primary key auto_increment,
+    stock_name varchar(50) not null,
+    volume int not null,
+    original_price double not null,
+    purchase_time varchar(50) not null,
+    strategy_type varchar(50) not null
+);
+    
+
+CREATE TABLE transactions (
+	id int primary key auto_increment,
+	strategy_id	int,
+	stock_name varchar(50) ,
+	stock_position varchar(50) not null,
+	profit double not null, 
+	is_complete varchar(1) not null,
+	transaction_time varchar(50) not null,
+	FOREIGN KEY (strategy_id) references strategy (id)
+		ON DELETE NO ACTION
+		ON UPDATE CASCADE	
+);
+
+CREATE TABLE two_moving_averages (
+	id int primary key auto_increment,
+	long_time int not null,
+	short_time int not null,
+	time_purchased varchar(50) not null
+);
+
+
+/****TEST DATA******/
+Insert Into strategy 
+VALUES(1, 'AAPL', 100, 1.00, sysdate(), 'tma');
+
+Insert Into strategy 
+VALUES(2, 'MSFT', 200, 2.00, sysdate(), 'tma');
+
+Insert Into strategy 
+VALUES(3, 'AAPL', 800, 1.00, sysdate(), 'tma');
+
+Insert Into strategy 
+VALUES(4, 'MSFT', 300, 4.00, sysdate(), 'tma');
+
+
+Insert Into two_moving_averages 
+VALUES(1, 10, 5, sysdate());
+
+Insert Into two_moving_averages 
+VALUES(2, 20, 8, sysdate());
+
+Insert Into two_moving_averages 
+VALUES(3, 90, 5, sysdate());
+
+Insert Into two_moving_averages 
+VALUES(4, 60, 2, sysdate());
+
+Insert Into transactions
+VALUES(0, 1, 'AAPL', 'BUY', -5.00, 'y', sysdate());
+
+Insert Into transactions 
+VALUES(0, 1, 'AAPL', 'SELL', 40.00, 'y', sysdate());
+
+Insert Into transactions
+VALUES(0, 2, 'MSFT', 'BUY', 25.00, 'y', sysdate());
+
+Insert Into transactions 
+VALUES(0, 2, 'MSFT', 'SELL', -30.00, 'y', sysdate());
+
+/*
+INSERT INTO MARKET_feed_data
+VALUES(0, 'MSFT', 98.12, sysdate() - 4);
+
+INSERT INTO MARKET_feed_data
+VALUES(0, 'MSFT', 36.12, sysdate() - 3);
+
+INSERT INTO MARKET_feed_data
+VALUES(0, 'AAPL', 83.11, sysdate() - 2);
+
+INSERT INTO MARKET_feed_data
+VALUES(0, 'AAPL', 22.22, sysdate() - 1);
+*/

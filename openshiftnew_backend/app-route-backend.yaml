@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Route
+metadata:
+  name: backend
+spec:
+  host: witi.backend.appsrvdev2.conygre.com
+  port:
+    targetPort: '8085'
+  to:
+    kind: Service
+    name: backend

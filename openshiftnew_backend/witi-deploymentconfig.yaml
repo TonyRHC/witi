@@ -1,0 +1,41 @@
+apiVersion: v1
+kind: DeploymentConfig
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f ../docker-compose.yaml --provider=openshift
+    kompose.version: 1.17.0 (a74acad)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: witi
+  name: witi
+spec:
+  replicas: 1
+  selector:
+    io.kompose.service: witi
+  strategy:
+    resources: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: witi
+    spec:
+      containers:
+      - image: ' '
+        name: witi-server
+        ports:
+        - containerPort: 8085
+        resources: {}
+      restartPolicy: Always
+  test: false
+  triggers:
+  - type: ConfigChange
+  - imageChangeParams:
+      automatic: true
+      containerNames:
+      - witi-server
+      from:
+        kind: ImageStreamTag
+        name: witi:1.0.0
+    type: ImageChange
+status: {}

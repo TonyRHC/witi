@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ImageStream
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: witi
+  name: witi
+spec:
+  tags:
+  - annotations: null
+    from:
+      kind: DockerImage
+      name: witi/witi-server:1.0.0
+    generation: null
+    importPolicy:
+       insecure: true
+    name: 1.0.0
+status:
+  dockerImageRepository: ""
